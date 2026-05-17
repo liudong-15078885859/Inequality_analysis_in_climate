@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CO₂ 排放量交互式图表</title>
+    <script src="https://cdn.plot.ly/plotly-2.32.0.min.js"></script>
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+    <div class="container" id="mainContainer">
+        <div class="loading-overlay" id="loadingOverlay">
+            <div class="spinner"></div>
+            <span id="loadingText">加载数据中...</span>
+        </div>
+
+        <!-- 工具栏 -->
+        <div class="toolbar">
+            <div class="toggle-group" id="toggleGroup">
+                <button class="toggle-btn active" data-mode="total" id="btnTotal">📊 年度排放量</button>
+                <button class="toggle-btn" data-mode="percapita" id="btnPerCapita">👤 人均排放量</button>
+                <button class="toggle-btn" data-mode="cumulative" id="btnCumulative">📈 累计排放量</button>
+            </div>
+            <div class="country-selector" id="countrySelector">
+                <div class="select-input-wrap" id="selectWrap">
+                    <div class="selected-tags" id="selectedTags"></div>
+                    <input type="text" class="search-input" id="searchInput" placeholder="搜索并选择国家/地区..."
+                        autocomplete="off">
+                </div>
+                <div class="dropdown-panel" id="dropdownPanel">
+                    <div class="dropdown-actions">
+                        <button id="btnSelectAll">✅ 全选</button>
+                        <button id="btnClearAll">❌ 清空</button>
+                        <button id="btnReset">🔄 重置默认</button>
+                    </div>
+                    <div class="dropdown-list" id="dropdownList"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 图表 -->
+        <div id="chart"></div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+
+</html>

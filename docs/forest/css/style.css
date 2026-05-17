@@ -1,0 +1,155 @@
+/* 基础样式，保持简洁 */
+:root{--max-width:1100px;--accent:#2b8c2b}
+*{box-sizing:border-box}
+body{font-family:Segoe UI,Roboto,"Helvetica Neue",Arial, sans-serif;margin:0;color:#222;background:#fafafa;display:flex;flex-direction:column;min-height:100vh}
+header{background:#fff;border-bottom:1px solid #eee;padding:18px}
+header h1{margin:0;font-size:1.2rem}
+/* 100% 宽度：嵌入 docs 的 iframe 内不再出现两侧大块留白；独立打开时仍受 --max-width 限制 */
+.container{width:100%;max-width:var(--max-width);margin:18px auto;padding:0 8px}
+#controls{margin-bottom:12px}
+.control-row{display:flex;gap:12px;align-items:center;flex-wrap:wrap;min-height:48px}
+/* 放大控件与按钮尺寸 */
+#controls{font-size:1.05rem}
+button{padding:10px 16px;font-size:1rem}
+select, input[type="range"]{font-size:1rem}
+
+/* 年份滑块：在嵌入窄 iframe 内仍可收缩，避免被父级 overflow:hidden 裁切「消失」 */
+.year-range{
+	flex:1 1 160px;
+	width:auto;
+	min-width:100px;
+	max-width:100%;
+	accent-color:var(--accent)
+}
+button{background:var(--accent);color:#fff;border:none;padding:8px 12px;border-radius:6px;cursor:pointer}
+button:active{transform:translateY(1px)}
+.panel{margin-bottom:14px}
+.card{background:#fff;border:1px solid #eee;padding:14px;border-radius:6px}
+#map-area.card,#chart4-area.card,#ranking-area.card,#chart5-area.card{padding:10px 8px}
+.full-map { padding: 0; }
+#map{width:100%;height:520px}
+#chart{width:100%;height:420px}
+.note{margin-top:8px;color:#666;font-size:0.95rem}
+.unit-hint{color:#666;font-size:0.95rem}
+
+/* 地图容器与图例 */
+#map{position:relative}
+.legend{display:flex;gap:6px;align-items:center;margin-top:8px}
+.legend .swatch{width:28px;height:12px;border-radius:2px}
+.tooltip{position:absolute;padding:6px 8px;background:#fff;border:1px solid #ddd;border-radius:4px;pointer-events:none;font-size:12px;color:#111;box-shadow:0 2px 6px rgba(0,0,0,0.08)}
+
+/* 简单响应 */
+@media(max-width:640px){#chart{height:300px}}
+
+/* Leaflet 交互样式调整：取消点击/聚焦时的轮廓，避免黑色框显示 */
+.leaflet-interactive:focus { outline: none; }
+.leaflet-container .leaflet-interactive { -webkit-tap-highlight-color: transparent; outline: none; }
+
+/* 让地图尽量占满视口；矩阵嵌入时子面板可 flex 分配剩余高度 */
+html,body{height:100%}
+header{flex-shrink:0}
+main.container{
+	flex:1 1 auto;
+	min-height:0;
+	display:flex;
+	flex-direction:column
+}
+main.container>.tab-panel:not(.hidden){
+	flex:1 1 auto;
+	min-height:0;
+	display:flex;
+	flex-direction:column;
+	overflow:hidden
+}
+/* 地图页控件行易超宽，勿裁切年份滑块 */
+#map-panel.tab-panel:not(.hidden){
+	overflow-x:auto;
+	overflow-y:auto;
+	-webkit-overflow-scrolling:touch
+}
+#map-panel #map-controls.control-row{flex-shrink:0}
+/* 地图按容器宽度保持 16:9 宽高比 */
+#map{width:100%;aspect-ratio:16/9;height:auto}
+
+/* Ranking chart */
+.ranking{background:#fff;border:1px solid #eee;padding:12px;margin-top:14px;border-radius:6px}
+.ranking .row{display:flex;align-items:center;height:28px;margin:6px 0;font-size:0.95rem}
+.ranking .barArea{flex:1;display:flex;align-items:center;position:relative}
+.ranking .centerLabel{width:56px;text-align:center;font-weight:700;color:#333}
+.ranking .bar{height:14px;border-radius:3px}
+.ranking .bar.positive{background:linear-gradient(90deg,#b7e4b7,#2b8c2b)}
+.ranking .bar.negative{background:linear-gradient(270deg,#f5b7b7,#d9534f)}
+/* SVG rect uses `fill`, not `background` */
+.ranking svg rect.bar.positive{fill:#2b8c2b}
+.ranking svg rect.bar.negative{fill:#d9534f}
+.ranking .iso{position:absolute;left:50%;transform:translateX(-50%);font-family:monospace;font-weight:700}
+
+/* New layout for paired rows: (barA)(codeA) | (codeB)(barB) */
+.ranking .leftBar, .ranking .rightBar{flex:1;display:flex;align-items:center;gap:8px}
+.ranking .leftBar{justify-content:flex-end}
+.ranking .rightBar{justify-content:flex-start}
+.ranking .leftBar svg, .ranking .rightBar svg{height:32px;display:block}
+.ranking .divider{flex:0 0 18px;text-align:center;color:#666;font-family:monospace;font-weight:700}
+.ranking .code{flex:0 0 40px;text-align:center;font-family:monospace;font-weight:700;color:#333}
+.tooltipTrend{position:absolute;pointer-events:none;background:#fff;border:1px solid #ddd;padding:8px;border-radius:6px;box-shadow:0 4px 12px rgba(0,0,0,0.12);font-size:12px;z-index:9999}
+.tooltipTrend svg.spark{width:180px;height:48px;display:block}
+.ranking svg text.barLabel{font-size:11px}
+/* Chart4：高度由 main.js 按行数写入 SVG 的 height 属性，勿用 CSS 锁 780px，否则与图例间会出现大块留白 */
+.chart4{width:100%;min-height:0}
+.chart4 svg{width:100%;height:auto;display:block;max-width:100%;vertical-align:top}
+.chart4 .axis text{font-size:12px}
+.chart4 .legend{display:flex;gap:8px;align-items:center;margin-top:8px}
+.chart4 .legend .item{display:flex;align-items:center;gap:6px}
+.chart4 .legend .sw{width:18px;height:12px;border-radius:3px}
+.chart4 .row-focus{outline:2px solid rgba(43,140,43,0.25)}
+.chart4-tooltip{position:absolute;pointer-events:none;background:#fff;border:1px solid #ddd;padding:8px;border-radius:6px;box-shadow:0 6px 18px rgba(0,0,0,0.12);font-size:13px;z-index:9999}
+.chart4-controls input[type="text"], .chart4-controls select{padding:6px;border-radius:6px;border:1px solid #ddd}
+
+/* Chart5（矩阵气泡）：高度由 main.js 按容器写入 SVG，勿锁死 min-height */
+.chart5{width:100%;min-height:0;display:flex;flex-direction:column;flex:1 1 auto;overflow:hidden}
+.chart5 svg{width:100%;height:auto;display:block;flex-shrink:0}
+.chart5 .axis text{font-size:12px}
+.chart5 .bubble{stroke:#333;stroke-opacity:0.15}
+.chart5-tooltip{position:absolute;pointer-events:none;background:#fff;border:1px solid #ddd;padding:8px;border-radius:6px;box-shadow:0 6px 18px rgba(0,0,0,0.12);font-size:13px;z-index:9999}
+.chart5-controls input[type="range"]{vertical-align:middle}
+
+/* 使图表面板在内容超高时可通过滚轮滚动 */
+#chart4-area { min-height:0; overflow:hidden; }
+#ranking-area { min-height:520px; overflow:hidden; }
+
+/* 矩阵页控件不压缩；面板布局由 main > .tab-panel 承担 */
+#chart5-panel .control-row{flex-shrink:0}
+#chart5-area.card{
+	display:flex;
+	flex-direction:column;
+	flex:1 1 auto;
+	min-height:0;
+	overflow:hidden;
+}
+#chart4 svg{height:auto;max-width:100%;vertical-align:top}
+.ranking{min-height:520px;overflow:hidden}
+
+/* Tabs & shared controls */
+.tabs-controls{display:flex;flex-direction:column;gap:8px;padding:8px 12px;margin-top:12px}
+.tabs{display:flex;gap:8px;align-items:center}
+.tab{background:#fff;color:#333;border:1px solid #ddd;padding:8px 12px;border-radius:6px;cursor:pointer}
+.tab.active{background:var(--accent);color:#fff;border-color:var(--accent)}
+.shared-controls{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+.tab-panel.hidden{display:none}
+.tab-panel{transition:opacity .18s ease}
+
+/* window position sliders (for paged/scrollable bar charts) */
+.window-range{width:240px;min-width:180px;max-width:320px;accent-color:var(--accent)}
+
+/* Ranking axis row (top) */
+.ranking .row.axisRow{height:34px;margin:0 0 10px 0}
+.ranking .axis text{font-size:12px;fill:#444}
+.ranking .axis path, .ranking .axis line{stroke:#ccc}
+
+/* make shared-controls slightly separated visually */
+.shared-controls label{font-weight:600;color:#333}
+
+@media(max-width:880px){
+	.year-range{flex:1 1 120px;min-width:80px;max-width:100%}
+	.container{width:100%;padding:0 6px}
+}

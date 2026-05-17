@@ -1,0 +1,25 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Chart · 绿色技术转让桑基图</title>
+  <style>
+    html, body { height: 100%; margin: 0; overflow: hidden; }
+    iframe { width: 100%; height: 100%; border: 0; display: block; }
+  </style>
+</head>
+<body>
+  <iframe id="frame" src="../../green-low-carbon-patents/test.html" loading="eager"></iframe>
+  <script type="module">
+    import { initIframeOnlyShow, EMBED_SINGLE_FRAME_CSS } from "../_wrapper-utils.js";
+
+    initIframeOnlyShow(document.getElementById('frame'), {
+      targetSelector: '#chart-tech-sankey',
+      keepClosestSelector: '.card',
+      hideSelectors: ['header', '.stats-row', '.insight-box'],
+      extraCss: EMBED_SINGLE_FRAME_CSS,
+    });
+  </script>
+</body>
+</html>

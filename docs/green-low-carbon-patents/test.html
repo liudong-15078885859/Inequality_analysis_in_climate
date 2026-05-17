@@ -1,0 +1,967 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <title>气候技术转让鸿沟：谁掌握了解决方案？</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;600;700&display=swap');
+        
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        
+        body {
+            font-family: 'Noto Sans SC', 'Segoe UI', sans-serif;
+            background: #ffffff;
+            min-height: 100vh;
+            padding: 40px 30px;
+            position: relative;
+            overflow-x: hidden;
+        }
+        
+        /* 背景装饰 */
+        body::before {
+            content: '';
+            position: fixed;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle at 30% 20%, rgba(0, 176, 155, 0.06) 0%, transparent 50%),
+                        radial-gradient(circle at 70% 80%, rgba(150, 201, 61, 0.05) 0%, transparent 50%);
+            z-index: 0;
+            pointer-events: none;
+        }
+        
+        .container {
+            max-width: 1500px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 1;
+        }
+        
+        /* 头部设计 */
+        header {
+            text-align: center;
+            margin-bottom: 50px;
+            position: relative;
+        }
+        
+        header::after {
+            content: '';
+            position: absolute;
+            bottom: -20px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100px;
+            height: 3px;
+            background: linear-gradient(90deg, transparent, #00b09b, transparent);
+            border-radius: 2px;
+        }
+        
+        h1 {
+            font-size: 2.8rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, #0d9488 0%, #059669 50%, #65a30d 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 15px;
+            letter-spacing: 2px;
+        }
+        
+        .subtitle {
+            color: #555555;
+            font-size: 1.05rem;
+            font-weight: 300;
+            letter-spacing: 0.5px;
+        }
+        
+        /* 统计卡片 */
+        .stats-row {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 24px;
+            margin-bottom: 35px;
+        }
+        
+        .stat-card {
+            background: #fafafa;
+            backdrop-filter: blur(20px);
+            border: 1px solid #e7e7e7;
+            border-radius: 20px;
+            padding: 28px 20px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        .stat-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, #00b09b, #96c93d);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        
+        .stat-card:hover {
+            transform: translateY(-8px) scale(1.02);
+            box-shadow: 0 12px 28px rgba(0,0,0,0.08);
+            border-color: rgba(0, 176, 155, 0.35);
+        }
+        
+        .stat-card:hover::before {
+            opacity: 1;
+        }
+        
+        .stat-icon {
+            width: 56px;
+            height: 56px;
+            margin: 0 auto 15px;
+            background: linear-gradient(135deg, rgba(0,176,155,0.2), rgba(150,201,61,0.1));
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.6rem;
+        }
+        
+        .stat-number {
+            font-size: 2.2rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, #00ffd5, #00b09b);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 8px;
+        }
+        
+        .stat-label {
+            color: #555555;
+            font-size: 0.88rem;
+            font-weight: 400;
+            line-height: 1.4;
+        }
+        
+        /* 图表卡片 */
+        .dashboard {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+            margin-bottom: 30px;
+        }
+        
+        .card {
+            background: #ffffff;
+            backdrop-filter: blur(20px);
+            border: 1px solid #e7e7e7;
+            border-radius: 24px;
+            padding: 28px;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(0,0,0,0.08), transparent);
+        }
+        
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 32px rgba(0,0,0,0.08);
+            border-color: rgba(0, 176, 155, 0.25);
+        }
+        
+        .card.full-width {
+            grid-column: span 2;
+        }
+        
+        .card-header {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            margin-bottom: 24px;
+            padding-bottom: 18px;
+            border-bottom: 1px solid #e7e7e7;
+        }
+        
+        .card-icon {
+            width: 52px;
+            height: 52px;
+            border-radius: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+        }
+        
+        .icon-map { 
+            background: linear-gradient(135deg, #11998e, #38ef7d); 
+            box-shadow: 0 8px 25px rgba(17, 153, 142, 0.4);
+        }
+        .icon-bar { 
+            background: linear-gradient(135deg, #f093fb, #f5576c); 
+            box-shadow: 0 8px 25px rgba(245, 87, 108, 0.4);
+        }
+        .icon-flow { 
+            background: linear-gradient(135deg, #4facfe, #00f2fe); 
+            box-shadow: 0 8px 25px rgba(79, 172, 254, 0.4);
+        }
+        
+        .card h3 {
+            color: #111111;
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+        
+        .card-subtitle {
+            color: #737373;
+            font-size: 0.82rem;
+        }
+        
+        .chart-container {
+            position: relative;
+        }
+        
+        /* 工具提示 */
+        .tooltip {
+            position: fixed;
+            background: #ffffff;
+            color: #111111;
+            padding: 14px 18px;
+            border-radius: 14px;
+            font-size: 13px;
+            pointer-events: none;
+            opacity: 0;
+            z-index: 1000;
+            box-shadow: 0 12px 32px rgba(0,0,0,0.12);
+            border: 1px solid #e7e7e7;
+            max-width: 240px;
+            backdrop-filter: blur(10px);
+        }
+        
+        .tooltip::before {
+            content: '';
+            position: absolute;
+            top: -9px;
+            left: 22px;
+            border-left: 9px solid transparent;
+            border-right: 9px solid transparent;
+            border-bottom: 9px solid #ffffff;
+        }
+        
+        /* 洞察卡片 */
+        .insight-box {
+            background: linear-gradient(145deg, rgba(0,176,155,0.12), rgba(150,201,61,0.08));
+            border: 1px solid rgba(0, 176, 155, 0.25);
+            border-radius: 24px;
+            padding: 30px 35px;
+            margin-top: 35px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .insight-box::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(0,255,213,0.5), transparent);
+        }
+        
+        .insight-title {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            color: #0d9488;
+            font-size: 1.15rem;
+            font-weight: 600;
+            margin-bottom: 18px;
+        }
+        
+        .insight-title span {
+            font-size: 1.4rem;
+        }
+        
+        .insight-list {
+            list-style: none;
+        }
+        
+        .insight-list li {
+            color: #374151;
+            padding: 10px 0;
+            padding-left: 28px;
+            position: relative;
+            font-size: 0.95rem;
+            line-height: 1.7;
+            border-bottom: 1px solid #e7e7e7;
+        }
+        
+        .insight-list li:last-child {
+            border-bottom: none;
+        }
+        
+        .insight-list li::before {
+            content: '✦';
+            position: absolute;
+            left: 0;
+            color: #00b09b;
+            font-size: 0.8rem;
+        }
+        
+        /* 动画 */
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(40px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+        
+        @keyframes glow {
+            0%, 100% { box-shadow: 0 0 20px rgba(0, 176, 155, 0.3); }
+            50% { box-shadow: 0 0 40px rgba(0, 176, 155, 0.5); }
+        }
+        
+        header {
+            animation: fadeInUp 0.8s ease forwards;
+        }
+        
+        .stat-card {
+            opacity: 0;
+            animation: fadeInUp 0.6s ease forwards;
+        }
+        
+        .stat-card:nth-child(1) { animation-delay: 0.1s; }
+        .stat-card:nth-child(2) { animation-delay: 0.2s; }
+        .stat-card:nth-child(3) { animation-delay: 0.3s; }
+        .stat-card:nth-child(4) { animation-delay: 0.4s; }
+        
+        .card {
+            opacity: 0;
+            animation: fadeInUp 0.6s ease forwards;
+        }
+        
+        .dashboard .card:nth-child(1) { animation-delay: 0.3s; }
+        .dashboard .card:nth-child(2) { animation-delay: 0.4s; }
+        .card.full-width { animation-delay: 0.5s; }
+        .insight-box { animation: fadeInUp 0.6s ease forwards; animation-delay: 0.7s; opacity: 0; }
+        
+        /* 响应式 */
+        @media (max-width: 1200px) {
+            .stats-row { grid-template-columns: repeat(2, 1fr); }
+            .dashboard { grid-template-columns: 1fr; }
+            .card.full-width { grid-column: span 1; }
+        }
+        
+        @media (max-width: 768px) {
+            body { padding: 25px 15px; }
+            h1 { font-size: 2rem; }
+            .stats-row { grid-template-columns: 1fr; gap: 16px; }
+            .stat-card { padding: 22px 16px; }
+            .stat-number { font-size: 1.8rem; }
+            .card { padding: 20px; }
+        }
+    </style>
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+    <script src="https://unpkg.com/d3-sankey@0.12.3/dist/d3-sankey.min.js"></script>
+    <script src="https://unpkg.com/topojson-client@3"></script>
+    <script src="data-update.js"></script>
+</head>
+<body>
+<div class="container">
+    <header>
+        <h1>🌍 绿色低碳专利全球分布</h1>
+        <p class="subtitle">追踪绿色低碳技术的全球分布与技术转让路径 | 数据来源：国家知识产权局《绿色低碳专利统计分析报告（2024）》</p>
+    </header>
+    
+    <!-- 统计数据 -->
+    <div class="stats-row">
+        <div class="stat-card">
+            <div class="stat-icon">📊</div>
+            <div class="stat-number" id="stat-total">24.3万</div>
+            <div class="stat-label">中国绿色低碳专利有效量（2023）</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-icon">📈</div>
+            <div class="stat-number">+13%</div>
+            <div class="stat-label">2023年全球申请增速</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-icon">🔬</div>
+            <div class="stat-number">5</div>
+            <div class="stat-label">核心技术领域</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-icon">⚡</div>
+            <div class="stat-number">37.2%</div>
+            <div class="stat-label">储能领域占比（最大）</div>
+        </div>
+    </div>
+    
+    <div class="dashboard">
+        <!-- 视图A：世界地图 -->
+        <div class="card">
+            <div class="card-header">
+                <div class="card-icon icon-map">🌍</div>
+                <div>
+                    <h3>绿色低碳专利全球分布</h3>
+                    <div class="card-subtitle">气泡大小代表有效专利数量（截至2023年底）；单击气泡与同页条形图联动</div>
+                </div>
+            </div>
+            <div id="chart-tech-map" class="chart-container"></div>
+        </div>
+        
+        <!-- 视图B：分组条形图 -->
+        <div class="card">
+            <div class="card-header">
+                <div class="card-icon icon-bar">📊</div>
+                <div>
+                    <h3>各国分技术领域专利分布</h3>
+                    <div class="card-subtitle">对比中美日德韩五国；单击柱条或图例与同页地图联动</div>
+                </div>
+            </div>
+            <div id="chart-tech-sector" class="chart-container"></div>
+        </div>
+    </div>
+    
+    <!-- 视图C：桑基图 -->
+    <div class="card full-width">
+        <div class="card-header">
+            <div class="card-icon icon-flow">🔄</div>
+            <div>
+                <h3>绿色低碳技术国际转让流动</h3>
+                <div class="card-subtitle">从技术持有国到发展中国家的转让流向（中国贡献全球75.7%增长）</div>
+            </div>
+        </div>
+        <div id="chart-tech-sankey" class="chart-container"></div>
+    </div>
+    
+        <!-- 洞察 -->
+    <div class="insight-box">
+        <div class="insight-title">
+            <span>💡</span> 关键洞察
+        </div>
+        <ul class="insight-list">
+            <li>数据来源：国家知识产权局《绿色低碳专利统计分析报告（2024）》（2024年8月5日发布）</li>
+            <li>截至2023年底，中国绿色低碳专利有效量达24.3万件，各领域同比均实现两位数增长</li>
+            <li>储能领域以37.2%的占比位居首位，是增速最快的领域（+19.8%）；温室气体捕集利用封存仅占6.7%</li>
+            <li>中国对全球绿色低碳专利增长贡献度达75.7%，广东、江苏、北京位居国内前三</li>
+        </ul>
+    </div>
+</div>
+
+<div class="tooltip" id="tooltip"></div>
+
+<script>
+// ======================== 数据定义 ========================
+// 数据来源: 国家知识产权局《绿色低碳专利统计分析报告（2024）》
+
+const patentData = patentDataUpdated;
+const techSectors = techSectorsUpdated;
+const countries = countriesUpdated;
+const sectorData = sectorDataUpdated;
+const techFlowData = techFlowDataUpdated;
+
+/** 嵌入 iframe / 裁切布局后 chart 容器可能一度为 0 宽；resize 时藏于 display:none 的图不应按 0 宽重绘 */
+function chartPlotWidth(container){
+    if(!container) return 720;
+    let w = container.clientWidth;
+    if(w >= 80) return w;
+    const fallback = (document.documentElement && document.documentElement.clientWidth) || window.innerWidth || 900;
+    return Math.max(300, Math.min(fallback - 32, 980));
+}
+function chartSlotVisible(container){
+    return !!(container && container.offsetParent !== null && container.getBoundingClientRect().width > 0);
+}
+
+/** 地图与分组条形图联动：当前选中国家（中文名），null 表示未选 */
+let patentSelectedCountry = null;
+
+/**
+ * @param {string|null} name
+ * @param {{ fromRemote?: boolean }} [opts] — fromRemote 为 true 时表示由父页 postMessage 中继，不再向上广播
+ */
+function setPatentCountrySelection(name, opts = {}) {
+    const fromRemote = opts.fromRemote === true;
+    patentSelectedCountry = name;
+    const m = document.getElementById("chart-tech-map");
+    const s = document.getElementById("chart-tech-sector");
+    if (chartSlotVisible(m)) drawTechMap();
+    if (chartSlotVisible(s)) drawTechSector();
+    if (!fromRemote && window.top && window.top !== window) {
+        window.top.postMessage(
+            { channel: "green-patents", action: "select-country", country: name },
+            "*"
+        );
+    }
+}
+
+window.addEventListener("message", (e) => {
+    if (!e.data || e.data.channel !== "green-patents" || e.data.action !== "select-country") return;
+    if (window.top === window) return;
+    if (e.source !== window.top) return;
+    setPatentCountrySelection(e.data.country, { fromRemote: true });
+});
+
+// 工具提示
+function showTooltip(event, html) {
+    const tooltip = d3.select("#tooltip");
+    tooltip.style("opacity", 1)
+        .style("left", (event.clientX + 15) + "px")
+        .style("top", (event.clientY - 10) + "px")
+        .html(html);
+}
+function hideTooltip() {
+    d3.select("#tooltip").style("opacity", 0);
+}
+
+// ======================== 视图A：世界地图 ========================
+function drawTechMap() {
+    const container = document.getElementById("chart-tech-map");
+    const width = chartPlotWidth(container);
+    const height = 380;
+    container.innerHTML = "";
+    
+    const svg = d3.select("#chart-tech-map")
+        .append("svg").attr("width", width).attr("height", height);
+    
+    // 渐变背景
+    const defs = svg.append("defs");
+    const gradient = defs.append("linearGradient").attr("id", "oceanGradient").attr("x1", "0%").attr("y1", "0%").attr("x2", "0%").attr("y2", "100%");
+    gradient.append("stop").attr("offset", "0%").attr("stop-color", "#e8f4fc");
+    gradient.append("stop").attr("offset", "100%").attr("stop-color", "#d4e9f7");
+    
+    svg.append("rect").attr("width", width).attr("height", height).attr("fill", "url(#oceanGradient)");
+
+    svg.on("click", () => setPatentCountrySelection(null));
+    
+    // 投影
+    const projection = d3.geoMercator()
+        .scale((width - 40) / 6)
+        .translate([width / 2, height / 1.6]);
+    
+    const path = d3.geoPath().projection(projection);
+    
+    // 加载地图
+    d3.json("https://cdn.jsdelivr.net/npm/world-atlas@2/countries-110m.json").then(world => {
+        // 绘制国家
+        const countries = topojson.feature(world, world.objects.countries);
+        svg.append("g")
+            .selectAll("path")
+            .data(countries.features)
+            .enter().append("path")
+            .attr("d", path)
+            .attr("fill", "#c8e6c9")
+            .attr("stroke", "#81c784")
+            .attr("stroke-width", 0.5)
+            .style("opacity", 0)
+            .transition()
+            .duration(800)
+            .style("opacity", 1);
+        
+        // 专利气泡
+        const colorScale = d3.scaleSequentialLog()
+            .domain([200, 300000])
+            .interpolator(d3.interpolateGreens);
+        const sizeScale = d3.scaleSqrt().domain([200, 300000]).range([5, 45]);
+        
+        const g = svg.append("g");
+        
+        // 添加光晕效果
+        patentData.forEach(d => {
+            const coords = projection([d.lon, d.lat]);
+            if (coords) {
+                const dimmed = patentSelectedCountry != null && patentSelectedCountry !== d.country;
+                const selected = patentSelectedCountry === d.country;
+                const baseR = sizeScale(d.patents);
+                // 外发光
+                g.append("circle")
+                    .attr("cx", coords[0]).attr("cy", coords[1])
+                    .attr("r", baseR + 5)
+                    .attr("fill", "none")
+                    .attr("stroke", colorScale(d.patents))
+                    .attr("stroke-width", 8)
+                    .attr("opacity", dimmed ? 0.06 : 0.2)
+                    .style("pointer-events", "none");
+                
+                // 主体气泡
+                const bubble = g.append("circle")
+                    .attr("cx", coords[0]).attr("cy", coords[1])
+                    .attr("r", 0)
+                    .attr("fill", colorScale(d.patents))
+                    .attr("stroke", selected ? "#0f766e" : "#ffffff")
+                    .attr("stroke-width", selected ? 3 : 1.5)
+                    .attr("opacity", dimmed ? 0.3 : 1)
+                    .style("cursor", "pointer");
+                
+                bubble.transition()
+                    .duration(1000)
+                    .delay(patentData.indexOf(d) * 100)
+                    .attr("r", baseR);
+                
+                // 标签
+                if (d.patents > 2000) {
+                    g.append("text")
+                        .attr("x", coords[0])
+                        .attr("y", coords[1] + baseR + 14)
+                        .attr("text-anchor", "middle")
+                        .text(d.country)
+                        .style("font-size", "11px")
+                        .style("fill", "#111111")
+                        .style("font-weight", "600")
+                        .style("text-shadow", "0 1px 2px rgba(255,255,255,0.9)")
+                        .style("opacity", 0)
+                        .style("pointer-events", "none")
+                        .transition()
+                        .delay(1200)
+                        .duration(500)
+                        .style("opacity", dimmed ? 0.28 : 1);
+                }
+                
+                bubble.on("click", function(event) {
+                    event.stopPropagation();
+                    setPatentCountrySelection(patentSelectedCountry === d.country ? null : d.country);
+                });
+                bubble.on("mouseover", function(event) {
+                    d3.select(this).transition().duration(200).attr("r", baseR * 1.15);
+                    const hint = patentSelectedCountry ? " · 单击清除或切换国家" : " · 单击与条形图联动";
+                    showTooltip(event, `<strong>${d.country}</strong><br/><span style="color:#00b09b">专利数:</span> ${(d.patents/1000).toFixed(1)}k件<br/><span style="color:#96c93d">地区:</span> ${d.region}<br/><span style="font-size:11px;color:#737373">${hint}</span>`);
+                }).on("mouseout", function() {
+                    d3.select(this).transition().duration(200).attr("r", baseR);
+                    hideTooltip();
+                });
+            }
+        });
+        
+    }).catch(() => {
+        svg.append("text").attr("x", width/2).attr("y", height/2)
+            .attr("text-anchor", "middle").text("地图加载中...").style("fill", "#525252");
+    });
+}
+
+// ======================== 视图B：分组条形图 ========================
+function drawTechSector() {
+    const container = document.getElementById("chart-tech-sector");
+    const width = chartPlotWidth(container);
+    const height = 380;
+    const showOutOfScope = patentSelectedCountry != null && !countries.includes(patentSelectedCountry);
+    const margin = { top: showOutOfScope ? 36 : 25, right: 85, bottom: 45, left: 55 };
+    const innerWidth = width - margin.left - margin.right;
+    const innerHeight = height - margin.top - margin.bottom;
+    container.innerHTML = "";
+    
+    const root = d3.select("#chart-tech-sector")
+        .append("svg").attr("width", width).attr("height", height);
+    const svg = root.append("g").attr("transform", `translate(${margin.left},${margin.top})`);
+
+    function barDimmedForCountry(country) {
+        if (!patentSelectedCountry) return false;
+        if (!countries.includes(patentSelectedCountry)) return true;
+        return country !== patentSelectedCountry;
+    }
+
+    if (showOutOfScope) {
+        svg.append("text").attr("x", innerWidth / 2).attr("y", -14)
+            .attr("text-anchor", "middle")
+            .text(`「${patentSelectedCountry}」不在五国分领域对比口径内（中美日德韩），条形图为示意聚合`)
+            .style("font-size", "11px").style("fill", "#b45309").style("font-weight", "500");
+    }
+
+    svg.append("rect")
+        .attr("width", innerWidth).attr("height", innerHeight)
+        .attr("fill", "transparent")
+        .style("cursor", "default")
+        .on("click", () => setPatentCountrySelection(null));
+    
+    // 渐变配色
+    const colors = {
+        "中国": { fill: "#e74c3c", dark: "#c0392b" },
+        "美国": { fill: "#3498db", dark: "#2980b9" },
+        "日本": { fill: "#f39c12", dark: "#d68910" },
+        "德国": { fill: "#27ae60", dark: "#1e8449" },
+        "韩国": { fill: "#9b59b6", dark: "#8e44ad" }
+    };
+    
+    const xScale = d3.scaleBand().domain(techSectors).range([0, innerWidth]).padding(0.12);
+    const yScale = d3.scaleLinear().domain([0, 18000]).range([innerHeight, 0]);
+    
+    // 网格线
+    svg.append("g").selectAll("line").data(yScale.ticks(5)).enter().append("line")
+        .attr("x1", 0).attr("x2", innerWidth)
+        .attr("y1", d => yScale(d)).attr("y2", d => yScale(d))
+        .attr("stroke", "#e0e0e0").attr("stroke-dasharray", "4,4");
+    
+    // 分组柱状图
+    const groupWidth = xScale.bandwidth() / countries.length;
+    
+    countries.forEach((country, countryIdx) => {
+        techSectors.forEach((sector, sectorIdx) => {
+            const dataPoint = sectorData.find(d => d.country === country && d.sector === sector);
+            if (dataPoint) {
+                const dim = barDimmedForCountry(country);
+                const bar = svg.append("rect")
+                    .attr("x", xScale(sector) + countryIdx * groupWidth)
+                    .attr("y", innerHeight)
+                    .attr("width", groupWidth - 3)
+                    .attr("height", 0)
+                    .attr("fill", colors[country].fill)
+                    .attr("rx", 4)
+                    .attr("opacity", dim ? 0.22 : 1)
+                    .style("cursor", "pointer");
+                
+                bar.transition()
+                    .duration(800)
+                    .delay(countryIdx * 100 + sectorIdx * 50)
+                    .ease(d3.easeElasticOut.amplitude(1).period(0.5))
+                    .attr("y", yScale(dataPoint.patents))
+                    .attr("height", innerHeight - yScale(dataPoint.patents));
+                
+                bar.on("click", function(event) {
+                    event.stopPropagation();
+                    setPatentCountrySelection(patentSelectedCountry === dataPoint.country ? null : dataPoint.country);
+                });
+                bar.on("mouseover", function(event) {
+                    const baseOp = dim ? 0.22 : 1;
+                    d3.select(this).transition().duration(150).attr("opacity", Math.min(1, baseOp + 0.15));
+                    showTooltip(event, `<strong>${dataPoint.country}</strong><br/>${dataPoint.sector}: <span style="color:#e74c3c">${(dataPoint.patents/1000).toFixed(1)}k件</span><br/><span style="font-size:11px;color:#737373">单击与地图联动</span>`);
+                }).on("mouseout", function() {
+                    d3.select(this).transition().duration(150).attr("opacity", dim ? 0.22 : 1);
+                    hideTooltip();
+                });
+            }
+        });
+    });
+    
+    // 坐标轴
+    svg.append("g").call(d3.axisLeft(yScale).ticks(5).tickFormat(d => (d/1000) + "k"))
+        .selectAll("text").style("font-size", "11px").style("fill", "#555");
+    svg.append("g").attr("transform", `translate(0,${innerHeight})`).call(d3.axisBottom(xScale))
+        .selectAll("text").style("font-size", "12px").style("fill", "#555").style("font-weight", "500");
+    
+    // 轴标签
+    svg.append("text").attr("x", innerWidth/2).attr("y", innerHeight + 38)
+        .attr("text-anchor", "middle").text("技术领域").style("font-size", "12px").style("fill", "#888");
+    svg.append("text").attr("transform", "rotate(-90)").attr("x", -innerHeight/2).attr("y", -42)
+        .attr("text-anchor", "middle").text("专利数量（千件）").style("font-size", "12px").style("fill", "#888");
+    
+    // 图例（可点击国家）
+    const legend = svg.append("g").attr("transform", `translate(${innerWidth - 10}, -5)`);
+    countries.forEach((country, i) => {
+        const row = legend.append("g")
+            .style("cursor", "pointer")
+            .attr("transform", `translate(0, ${i * 20})`);
+        const legDim = barDimmedForCountry(country);
+        row.append("rect").attr("x", 0).attr("y", 0).attr("width", 16).attr("height", 16)
+            .attr("fill", colors[country].fill).attr("rx", 3)
+            .attr("opacity", legDim ? 0.35 : 1);
+        row.append("text").attr("x", 22).attr("y", 12)
+            .text(country).style("font-size", "11px").style("fill", "#333")
+            .attr("opacity", legDim ? 0.45 : 1);
+        row.on("click", function(event) {
+            event.stopPropagation();
+            setPatentCountrySelection(patentSelectedCountry === country ? null : country);
+        });
+    });
+}
+
+// ======================== 视图C：桑基图 ========================
+function drawTechSankey() {
+    const container = document.getElementById("chart-tech-sankey");
+    const width = chartPlotWidth(container);
+    const height = 380;
+    container.innerHTML = "";
+    
+    const svg = d3.select("#chart-tech-sankey")
+        .append("svg").attr("width", width).attr("height", height);
+    
+    const defs = svg.append("defs");
+    
+    // 源节点渐变
+    const sourceGradient = defs.append("linearGradient").attr("id", "sourceGrad").attr("x1", "0%").attr("y1", "0%").attr("x2", "100%").attr("y2", "0%");
+    sourceGradient.append("stop").attr("offset", "0%").attr("stop-color", "#11998e");
+    sourceGradient.append("stop").attr("offset", "100%").attr("stop-color", "#38ef7d");
+    
+    // 目标节点渐变
+    const targetGradient = defs.append("linearGradient").attr("id", "targetGrad").attr("x1", "0%").attr("y1", "0%").attr("x2", "100%").attr("y2", "0%");
+    targetGradient.append("stop").attr("offset", "0%").attr("stop-color", "#4facfe");
+    targetGradient.append("stop").attr("offset", "100%").attr("stop-color", "#00f2fe");
+    
+    const margin = { left: 110, right: 110 };
+    const nodeWidth = 24;
+    const nodePadding = 18;
+    
+    const sourceNodes = techFlowData.nodes.filter(n => n.category === "source");
+    const targetNodes = techFlowData.nodes.filter(n => n.category === "target");
+    
+    sourceNodes.forEach(n => {
+        n.value = techFlowData.links.filter(l => l.source === n.name).reduce((sum, l) => sum + l.value, 0);
+    });
+    targetNodes.forEach(n => {
+        n.value = techFlowData.links.filter(l => l.target === n.name).reduce((sum, l) => sum + l.value, 0);
+    });
+    
+    const maxValue = Math.max(d3.max(sourceNodes, d => d.value) || 1, d3.max(targetNodes, d => d.value) || 1);
+    const nodeHeightScale = d3.scaleLinear().domain([0, maxValue]).range([25, 85]);
+    
+    let yOffset = 30;
+    sourceNodes.forEach((n, i) => {
+        n.y0 = yOffset;
+        n.y1 = yOffset + nodeHeightScale(n.value);
+        n.x0 = margin.left;
+        n.x1 = margin.left + nodeWidth;
+        yOffset = n.y1 + nodePadding;
+    });
+    
+    yOffset = 30;
+    targetNodes.forEach((n, i) => {
+        n.y0 = yOffset;
+        n.y1 = yOffset + nodeHeightScale(n.value);
+        n.x0 = width - margin.right - nodeWidth;
+        n.x1 = width - margin.right;
+        yOffset = n.y1 + nodePadding;
+    });
+    
+    const allNodes = [...sourceNodes, ...targetNodes];
+    const nodeMap = {};
+    allNodes.forEach((n, i) => { nodeMap[n.name] = i; });
+    
+    const links = techFlowData.links.map(l => ({
+        source: nodeMap[l.source],
+        target: nodeMap[l.target],
+        value: l.value,
+        sourceNode: sourceNodes.find(n => n.name === l.source),
+        targetNode: targetNodes.find(n => n.name === l.target)
+    }));
+    
+    // 绘制连接线
+    const linkGen = d3.linkHorizontal()
+        .source(d => [d.sourceNode.x1, (d.sourceNode.y0 + d.sourceNode.y1) / 2])
+        .target(d => [d.targetNode.x0, (d.targetNode.y0 + d.targetNode.y1) / 2]);
+    
+    // 连接线渐变
+    links.forEach((d, i) => {
+        const linkGrad = defs.append("linearGradient")
+            .attr("id", `linkGrad${i}`)
+            .attr("x1", "0%").attr("y1", "0%")
+            .attr("x2", "100%").attr("y2", "0%");
+        linkGrad.append("stop").attr("offset", "0%").attr("stop-color", "#11998e");
+        linkGrad.append("stop").attr("offset", "100%").attr("stop-color", "#4facfe");
+        
+        svg.append("path")
+            .attr("d", linkGen(d))
+            .attr("stroke", `url(#linkGrad${i})`)
+            .attr("stroke-width", Math.max(1, d.value / 6))
+            .attr("fill", "none")
+            .attr("opacity", 0)
+            .transition()
+            .duration(1000)
+            .delay(500 + i * 80)
+            .attr("opacity", 0.5);
+        
+        svg.select("path:last-child")
+            .on("mouseover", function(event) {
+                d3.select(this).transition().duration(200).attr("opacity", 0.9).attr("stroke-width", Math.max(2, d.value / 4));
+                showTooltip(event, `<strong>${d.sourceNode.name}</strong> → <strong>${d.targetNode.name}</strong><br/><span style="color:#38ef7d">转让量:</span> ${d.value}项专利`);
+            })
+            .on("mouseout", function() {
+                d3.select(this).transition().duration(200).attr("opacity", 0.5).attr("stroke-width", Math.max(1, d.value / 6));
+                hideTooltip();
+            });
+    });
+    
+    // 源节点
+    const sourceG = svg.append("g");
+    sourceNodes.forEach((d, i) => {
+        const nodeG = sourceG.append("g").attr("transform", `translate(${d.x0}, ${d.y0})`);
+        
+        nodeG.append("rect")
+            .attr("width", d.x1 - d.x0)
+            .attr("height", 0)
+            .attr("fill", "url(#sourceGrad)")
+            .attr("rx", 6)
+            .transition()
+            .duration(600)
+            .delay(i * 100)
+            .attr("height", d.y1 - d.y0);
+        
+        nodeG.append("text")
+            .attr("x", -10)
+            .attr("y", (d.y1 - d.y0) / 2)
+            .attr("dy", "0.35em")
+            .attr("text-anchor", "end")
+            .text(d.name)
+            .style("font-size", "12px")
+            .style("fill", "#1a1a2e")
+            .style("font-weight", "600");
+    });
+    
+    // 目标节点
+    const targetG = svg.append("g");
+    targetNodes.forEach((d, i) => {
+        const nodeG = targetG.append("g").attr("transform", `translate(${d.x0}, ${d.y0})`);
+        
+        nodeG.append("rect")
+            .attr("width", d.x1 - d.x0)
+            .attr("height", 0)
+            .attr("fill", "url(#targetGrad)")
+            .attr("rx", 6)
+            .transition()
+            .duration(600)
+            .delay(300 + i * 100)
+            .attr("height", d.y1 - d.y0);
+        
+        nodeG.append("text")
+            .attr("x", (d.x1 - d.x0) + 10)
+            .attr("y", (d.y1 - d.y0) / 2)
+            .attr("dy", "0.35em")
+            .attr("text-anchor", "start")
+            .text(d.name)
+            .style("font-size", "12px")
+            .style("fill", "#1a1a2e")
+            .style("font-weight", "600");
+    });
+    
+    // 标题
+    svg.append("text").attr("x", margin.left - 10).attr("y", 18)
+        .attr("text-anchor", "end").text("技术持有国")
+        .style("font-size", "11px").style("fill", "#11998e").style("font-weight", "600");
+    svg.append("text").attr("x", width - margin.right + 10).attr("y", 18)
+        .attr("text-anchor", "start").text("技术接收国")
+        .style("font-size", "11px").style("fill", "#4facfe").style("font-weight", "600");
+}
+
+// 窗口自适应：仅重绘当前可见的图（裁切后隐藏的容器 clientWidth 为 0，避免把图画没）
+window.addEventListener("resize", () => {
+    const m = document.getElementById("chart-tech-map");
+    const s = document.getElementById("chart-tech-sector");
+    const k = document.getElementById("chart-tech-sankey");
+    if(chartSlotVisible(m)) drawTechMap();
+    if(chartSlotVisible(s)) drawTechSector();
+    if(chartSlotVisible(k)) drawTechSankey();
+});
+
+// 初始化（二次 rAF：iframe 内嵌时首帧容器宽度可能仍为 0）
+document.addEventListener("DOMContentLoaded", () => {
+    const run = () => { drawTechMap(); drawTechSector(); drawTechSankey(); };
+    run();
+    requestAnimationFrame(() => { run(); });
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,112 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>森林与气候责任 — 可视化</title>
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+  <script src="https://d3js.org/d3.v7.min.js"></script>
+</head>
+<body>
+  <header>
+    <h1>森林与气候责任：简洁可视化演示</h1>
+    <p>数据目录：<code>dataset/</code>（请通过静态服务器预览）</p>
+  </header>
+
+  <div class="tabs-controls container">
+    <div class="tabs" role="tablist" aria-label="主视图切换">
+      <button id="tab-map" class="tab active" role="tab" aria-selected="true">森林面积地图</button>
+      <button id="tab-chart4" class="tab" role="tab">森林构成</button>
+      <button id="tab-ranking" class="tab" role="tab">各国净增长率</button>
+      <button id="tab-chart5" class="tab" role="tab">图表</button>
+    </div>
+  </div>
+
+  <main class="container">
+    <section id="map-panel" class="panel tab-panel">
+      <div id="map-controls" class="control-row">
+        <button id="load-map">加载/刷新地图</button>
+        <label for="display-mode">显示：</label>
+        <select id="display-mode">
+          <option value="percent">百分比（%）</option>
+          <option value="area">总面积（ha）</option>
+        </select>
+        <span class="unit-hint">单位：覆盖率为 %；面积为公顷（ha）</span>
+        <label for="map-year-range">年份：</label>
+        <input id="map-year-range" class="year-range" type="range" min="1990" max="2025" step="1" />
+        <span id="map-year-label">—</span>
+      </div>
+
+      <div id="map-area" class="card">
+        <div id="map" class="full-map"></div>
+        <div id="insight" class="note">地图会自动加载；拖动上方年份滑块切换地图年份。</div>
+      </div>
+    </section>
+    <section id="chart4-panel" class="panel tab-panel hidden">
+      <div id="chart4-controls" class="control-row">
+        <div style="font-weight:700">天然林 vs 人工再生林</div>
+        <label for="chart4-year-range">年份：</label>
+        <input id="chart4-year-range" class="year-range" type="range" min="1990" max="2025" step="1" />
+        <span id="chart4-year-label">—</span>
+        <!-- <label for="chart4-topn">Top</label> -->
+        <label for="chart4-mode">视图：</label>
+        <select id="chart4-mode"><option value="stacked">堆叠</option><option value="grouped">分组</option><option value="percent">占比</option></select>
+        <label for="chart4-sort">排序：</label>
+        <select id="chart4-sort"><option value="total">按总量</option><option value="natural">按天然林</option><option value="planted">按人工林</option></select>
+        <input id="chart4-search" placeholder="搜索国家（ISO或名称）" style="min-width:220px;padding:6px;border-radius:6px;border:1px solid #ddd" />
+        <label for="chart4-window-range">位置：</label>
+        <input id="chart4-window-range" class="window-range" type="range" min="0" max="0" step="1" value="0" />
+        <span id="chart4-window-label" class="unit-hint">—</span>
+      </div>
+
+      <div id="chart4-area" class="card">
+        <div id="chart4" class="chart4" role="img" aria-label="天然林与人工再生林对比图"></div>
+      </div>
+    </section>
+
+    <section id="ranking-panel" class="panel tab-panel hidden">
+      <div id="ranking-controls" class="control-row">
+        <div style="font-weight:700">森林净变化排名</div>
+        <span class="unit-hint">单位：公顷（ha）</span>
+        <label for="ranking-year-range">年份：</label>
+        <input id="ranking-year-range" class="year-range" type="range" min="1990" max="2025" step="1" />
+        <span id="ranking-year-label">—</span>
+        <label for="ranking-window-range">位置：</label>
+        <input id="ranking-window-range" class="window-range" type="range" min="0" max="0" step="1" value="0" />
+        <span id="ranking-window-label" class="unit-hint">—</span>
+      </div>
+
+      <div id="ranking-area" class="card">
+        <div id="ranking" class="ranking"></div>
+      </div>
+    </section>
+
+    <section id="chart5-panel" class="panel tab-panel hidden">
+      <div id="chart5-controls" class="control-row">
+        <div style="font-weight:700">森林碳汇潜力矩阵</div>
+        <label for="chart5-year-range">年份：</label>
+        <input id="chart5-year-range" class="year-range" type="range" min="1990" max="2025" step="1" />
+        <span id="chart5-year-label">—</span>
+        <label for="chart5-size-mode">大小：</label>
+        <!-- <select id="chart5-size-mode"><option value="area">总面积</option><option value="sqrt">Sqrt</option></select>
+        <label for="chart5-scale">缩放：</label>
+        <input id="chart5-scale" type="range" min="0.2" max="4" step="0.1" value="1" /> -->
+        <span id="chart5-scale-label">1.0x</span>
+        <button id="chart5-zoom-in" title="放大">＋</button>
+        <button id="chart5-zoom-out" title="缩小">－</button>
+        <span id="chart5-zoom-level">1.00x</span>
+        <button id="chart5-reset">重置视图</button>
+      </div>
+
+      <div id="chart5-area" class="card">
+        <div id="chart5" class="chart5" role="img" aria-label="森林碳汇潜力矩阵"></div>
+      </div>
+    </section>
+  </main>
+
+  <script src="../script/data-loader.js"></script>
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <script src="../script/main.js"></script>
+</body>
+</html>

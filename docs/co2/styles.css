@@ -1,0 +1,328 @@
+/* 全局样式，从原 test.html 提取 */
+:root {
+    --bg: #ffffff;
+    --border: #e2e6ea;
+    --shadow: 0 1px 3px rgba(0, 0, 0, 0.06);
+    --text: #1a1a2e;
+    --text-secondary: #6B7280;
+    --accent: #2563EB;
+    --accent-light: #EFF6FF;
+    --danger: #EF4444;
+    --radius: 10px;
+    --transition: 0.2s ease;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    background: #ffffff;
+    font-family: 'Inter', 'Segoe UI', 'Helvetica Neue', 'PingFang SC', 'Microsoft YaHei', sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    min-height: 100vh;
+    padding: 24px 16px;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+.container {
+    width: 100%;
+    max-width: 1200px;
+    background: #ffffff;
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 20px 16px 10px 8px;
+    box-shadow: var(--shadow);
+    transition: box-shadow 0.3s ease;
+    position: relative;
+}
+
+.container:hover {
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+}
+
+/* ========== 工具栏 ========== */
+.toolbar {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-start;
+    gap: 12px;
+    margin-bottom: 14px;
+    padding: 0 8px;
+}
+
+.toggle-group {
+    display: flex;
+    background: #f3f4f6;
+    border-radius: 8px;
+    padding: 3px;
+    flex-shrink: 0;
+}
+
+.toggle-btn {
+    padding: 9px 18px;
+    border: none;
+    background: transparent;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--text-secondary);
+    transition: all var(--transition);
+    white-space: nowrap;
+    font-family: inherit;
+    letter-spacing: 0.01em;
+}
+
+.toggle-btn.active {
+    background: #ffffff;
+    color: #111827;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12);
+    font-weight: 600;
+}
+
+.toggle-btn:hover:not(.active) {
+    color: #374151;
+    background: rgba(255, 255, 255, 0.5);
+}
+
+/* ========== 国家选择器 ========== */
+.country-selector {
+    position: relative;
+    flex: 1;
+    min-width: 250px;
+    max-width: 520px;
+}
+
+.select-input-wrap {
+    display: flex;
+    align-items: center;
+    border: 1.5px solid #d1d5db;
+    border-radius: 8px;
+    padding: 8px 12px;
+    cursor: pointer;
+    background: #ffffff;
+    transition: border-color var(--transition);
+    gap: 8px;
+    min-height: 42px;
+    flex-wrap: wrap;
+}
+
+.select-input-wrap:focus-within,
+.select-input-wrap.active {
+    border-color: var(--accent);
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.08);
+}
+
+.selected-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 5px;
+    align-items: center;
+    flex: 1;
+}
+
+.tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    background: var(--accent-light);
+    color: var(--accent);
+    padding: 3px 9px;
+    border-radius: 14px;
+    font-size: 12px;
+    font-weight: 500;
+    white-space: nowrap;
+    border: 1px solid rgba(37, 99, 235, 0.2);
+}
+
+.tag .remove-tag {
+    cursor: pointer;
+    font-size: 15px;
+    line-height: 1;
+    opacity: 0.6;
+    transition: opacity var(--transition);
+    margin-left: 2px;
+}
+
+.tag .remove-tag:hover {
+    opacity: 1;
+}
+
+.search-input {
+    border: none;
+    outline: none;
+    background: transparent;
+    font-size: 13px;
+    font-family: inherit;
+    min-width: 80px;
+    flex: 1;
+    color: #111827;
+    padding: 2px 0;
+}
+
+.search-input::placeholder {
+    color: #9CA3AF;
+}
+
+.dropdown-panel {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    margin-top: 4px;
+    background: #ffffff;
+    border: 1px solid #e5e7eb;
+    border-radius: 10px;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+    z-index: 100;
+    max-height: 340px;
+    overflow: hidden;
+    display: none;
+    flex-direction: column;
+}
+
+.dropdown-panel.open {
+    display: flex;
+}
+
+.dropdown-actions {
+    display: flex;
+    gap: 8px;
+    padding: 10px 14px;
+    border-bottom: 1px solid #f3f4f6;
+    flex-shrink: 0;
+}
+
+.dropdown-actions button {
+    font-size: 11px;
+    padding: 5px 12px;
+    border-radius: 14px;
+    border: 1px solid #d1d5db;
+    background: #f9fafb;
+    cursor: pointer;
+    font-family: inherit;
+    color: #374151;
+    transition: all var(--transition);
+    white-space: nowrap;
+}
+
+.dropdown-actions button:hover {
+    background: #f3f4f6;
+    border-color: #9CA3AF;
+}
+
+.dropdown-list {
+    overflow-y: auto;
+    flex: 1;
+    padding: 6px 0;
+    max-height: 260px;
+}
+
+.dropdown-list label {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 7px 14px;
+    cursor: pointer;
+    font-size: 13px;
+    color: #374151;
+    transition: background var(--transition);
+    font-family: inherit;
+}
+
+.dropdown-list label:hover {
+    background: #f9fafb;
+}
+
+.dropdown-list input[type="checkbox"] {
+    cursor: pointer;
+    accent-color: var(--accent);
+    width: 16px;
+    height: 16px;
+    flex-shrink: 0;
+}
+
+.dropdown-list .no-results {
+    padding: 16px 14px;
+    color: #9CA3AF;
+    font-size: 13px;
+    text-align: center;
+}
+
+/* ========== 图表区域 ========== */
+#chart {
+    width: 100%;
+    height: 560px;
+    cursor: default;
+}
+
+/* ========== 加载状态 ========== */
+.loading-overlay {
+    display: none;
+    position: absolute;
+    inset: 0;
+    background: rgba(255, 255, 255, 0.7);
+    z-index: 50;
+    border-radius: 14px;
+    justify-content: center;
+    align-items: center;
+    font-size: 14px;
+    color: #6B7280;
+    gap: 10px;
+    flex-direction: column;
+}
+
+.loading-overlay.visible {
+    display: flex;
+}
+
+.spinner {
+    width: 32px;
+    height: 32px;
+    border: 3px solid #e5e7eb;
+    border-top-color: var(--accent);
+    border-radius: 50%;
+    animation: spin 0.7s linear infinite;
+}
+
+@keyframes spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+/* ========== 响应式 ========== */
+@media (max-width: 768px) {
+    body {
+        padding: 8px;
+    }
+
+    .container {
+        padding: 12px 6px 6px 2px;
+        border-radius: 10px;
+    }
+
+    #chart {
+        height: 400px;
+    }
+
+    .toolbar {
+        flex-direction: column;
+        gap: 8px;
+    }
+
+    .country-selector {
+        max-width: 100%;
+    }
+
+    .toggle-btn {
+        padding: 7px 13px;
+        font-size: 12px;
+    }
+}
